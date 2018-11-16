@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lectura digital</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="monitor-serial">Monitor serial</h1>
+<p><em>Serial monitor</em>.</p>
+<h2 id="funciones">Funciones</h2>
+<h3 id="método-serial.begin">Método <code>Serial.begin()</code></h3>
+<p>Se utiliza para inicializar el monitor serial</p>
+<h4 id="baudios">Baudios</h4>
+<h3 id="método-serial.print">Método <code>Serial.print()</code></h3>
+<h3 id="método-serial.println">Método <code>Serial.println()</code></h3>
+<h2 id="probando-el-monitor-serial">Probando el monitor serial</h2>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">void</span> <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  Serial<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token number">9600</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Inicializamos el monitor serial en 9600 baudios</span>
+  Serial<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Esto es por una instrucción print. "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  Serial<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Esto es por otra."</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Esta se mostrará en la misma línea</span>
+<span class="token punctuation">}</span>
+ 
+<span class="token keyword">void</span> <span class="token function">loop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  Serial<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Esto se muestra muchas veces en líneas distintas"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h1 id="pulsador">Pulsador</h1>
+<p>También llamados “botones”, tiene como uso poner en funcionamiento un circuito cuando se presiona.</p>
+<h2 id="esquema">Esquema</h2>
+<p>Al pulsar el botón se cierra el circuito de forma que la corriente comienza a fluir por este.</p>
+<p><img src="https://programarfacil.com/wp-content/uploads/2016/02/pulsador.jpg" alt="Esquema de un pulsador"></p>
+<p>Como se nota en la imagen, de las 4 patas del pulsador sólo las que están opuestas se conectan entre sí. Y a su vez, las que están a un mismo costado no están conectadas.</p>
+<p>De esta forma, cuando se quiera conectar un circuito al pulsador se hará de forma diagonal ya que el circuito estará cerrado a menos de que se active.</p>
+<h2 id="prender-un-led-con-un-pulsador">Prender un led con un pulsador</h2>
+<p>En el esquema siguiente, el led se enciende sólo cuando el botón está presionado.</p>
+<p><img src="https://user-images.githubusercontent.com/16374322/48636135-cd1ff000-e9a8-11e8-8a87-73aede9cd272.png" alt="pulsador led directo"></p>
+<blockquote>
+<p>No hay necesidad de programar el Arduino. Podríamos simplemente <strong>reemplazar el Arduino por una fuente de energía externa</strong>, como una pila, y nuestro circuito aún seguiría funcionando.</p>
+</blockquote>
+<h1 id="lectura-digital">Lectura digital</h1>
+<h2 id="función-digitalread">Función <code>digitalRead()</code></h2>
+<h2 id="leer-un-pulsador">Leer un pulsador</h2>
+<p><img src="https://user-images.githubusercontent.com/16374322/48635623-6f3ed880-e9a7-11e8-80c5-eb02d601395f.png" alt="pulsador solito"></p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">const</span> <span class="token keyword">int</span> pin <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span> <span class="token comment">// Se guarda el pin del botón</span>
+
+<span class="token keyword">void</span> <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  Serial<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token number">9600</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Inicializamos el monitor serie en 9600 baudios</span>
+<span class="token punctuation">}</span>
+ 
+<span class="token keyword">void</span> <span class="token function">loop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">digitalRead</span><span class="token punctuation">(</span>pin<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Serial<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Se presiono el boton"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<blockquote>
+<p>Si presionamos el botón una sola vez, el programa nos mostrará más de una línea diciendo que <code>Se presiono el boton</code>.<br>
+Esto es porque la función <code>loop()</code> se ejecuta tan rápido que alcanza a repetirse más de una vez en los milisegundos que presionamos el botón.</p>
+</blockquote>
+<h2 id="prender-un-led-con-arduino-y-un-pulsador">Prender un led con Arduino y un pulsador</h2>
+<p><img src="https://user-images.githubusercontent.com/16374322/48636238-18d29980-e9a9-11e8-9701-edea8f91cbeb.png" alt="pulsador led"></p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">const</span> <span class="token keyword">int</span> pinBoton <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span> <span class="token comment">// Variable para guardar el pin donde esta conectado el botón</span>
+<span class="token keyword">const</span> <span class="token keyword">int</span> pinLed <span class="token operator">=</span> <span class="token number">8</span><span class="token punctuation">;</span> <span class="token comment">// Variable para guardar el pin del led</span>
+
+bool ledPrendido <span class="token operator">=</span> false<span class="token punctuation">;</span> <span class="token comment">// Se define el estado inicial del led</span>
+
+<span class="token keyword">void</span> <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">pinMode</span><span class="token punctuation">(</span>pinBoton<span class="token punctuation">,</span> INPUT<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Se configura el botón como entrada</span>
+  <span class="token function">pinMode</span><span class="token punctuation">(</span>pinLed<span class="token punctuation">,</span> OUTPUT<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Se configura el led como salida</span>
+  Serial<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token number">9600</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Se configura el monitor serie en 9600 baudios</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">loop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  bool estaPresionado <span class="token operator">=</span> <span class="token function">digitalRead</span><span class="token punctuation">(</span>pinBoton<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Se guarda el estado del botón</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>estaPreisonado<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>ledPrendido<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token function">digitalWrite</span><span class="token punctuation">(</span>pinLed<span class="token punctuation">,</span> LOW<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Se apaga el led si estaba prendido</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token function">digitalWrite</span><span class="token punctuation">(</span>pinLed<span class="token punctuation">,</span> HIGH<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Se prende el led si estaba apagado</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Pequeño delay para evitar multiples lecturas</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</div>
+</body>
+
+</html>

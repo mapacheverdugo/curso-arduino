@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lectura análoga</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="lectura-análoga">Lectura análoga</h1>
+<p>La lectura análoga se realiza por los pines <em><strong>Analog In</strong></em> (entrada análoga) y nos sirve para leer valores más allá del <code>HIGH</code> y el <code>LOW</code> (<code>true</code> y <code>false</code>) que permitían los pines digitales.</p>
+<h2 id="rango-de-lectura">Rango de lectura</h2>
+<p>Según el modelo de nuestra placa, tendremos un rango definido de lectura. En el caso del Arduino® UNO tendremos un rango de <strong>10 bits</strong>, por lo que tenemos 1024 posibles valores de lectura, desde el <code>0</code> al <code>1023</code></p>
+<blockquote>
+<p>Recordar que un bit sólo puede tomar valores de <code>0</code> ó <code>1</code>.</p>
+</blockquote>
+<h2 id="lectura-de-un-resistor">Lectura de un resistor</h2>
+<p><img src="https://user-images.githubusercontent.com/16374322/48383105-2cd57d00-e6c3-11e8-8bc1-b12eaab2ed54.png" alt="Lectura análoga de un resistor con Arduino"></p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">const</span> <span class="token keyword">int</span> pin <span class="token operator">=</span> A0<span class="token punctuation">;</span> <span class="token comment">// Pin analógico</span>
+<span class="token keyword">const</span> <span class="token keyword">int</span> r1 <span class="token operator">=</span> <span class="token number">200</span><span class="token punctuation">;</span> <span class="token comment">// Resistencia conocida</span>
+<span class="token keyword">const</span> <span class="token keyword">float</span> voltaje <span class="token operator">=</span> <span class="token number">5.0</span><span class="token punctuation">;</span> <span class="token comment">// Voltaje de trabajo</span>
+
+<span class="token keyword">float</span> voltajeR2<span class="token punctuation">;</span> <span class="token comment">// Valor a calcular</span>
+<span class="token keyword">float</span> r2<span class="token punctuation">;</span> <span class="token comment">// Valor a final de la R2</span>
+<span class="token keyword">long</span>  lectura<span class="token punctuation">;</span> <span class="token comment">// Valor de lectura del pin</span>
+
+<span class="token keyword">void</span> <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  Serial<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token number">9600</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">loop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  lectura <span class="token operator">=</span> <span class="token function">analogRead</span><span class="token punctuation">(</span>pin<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Guardamos el valor de la lectura en una variable</span>
+  voltajeR2 <span class="token operator">=</span> <span class="token punctuation">(</span>voltaje<span class="token operator">/</span><span class="token number">1023.0</span><span class="token punctuation">)</span> <span class="token operator">*</span> lectura<span class="token punctuation">;</span> <span class="token comment">// Colculamos el voltaje en la resistencia desconocida</span>
+  
+  <span class="token comment">// Lo imprimimos en el Monitor Serie</span>
+  Serial<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"El voltaje en R2 es de "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  Serial<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span>voltajeR2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  Serial<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">" voltios"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  
+  <span class="token comment">// Calculamos la resistencia desconocida con las fórmulas V1/R1=V2/R2 y V1=(+5V)-V2</span>
+  r2 <span class="token operator">=</span> r1 <span class="token operator">*</span> voltajeR2<span class="token operator">/</span><span class="token punctuation">(</span>voltaje<span class="token operator">-</span>voltajeR2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  Serial<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"La resistencia es de "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  Serial<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span>r2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  Serial<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">" ohms"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">5000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="lectura-de-un-potenciómetro">Lectura de un potenciómetro</h2>
+<p><img src="https://user-images.githubusercontent.com/16374322/48383454-9013df00-e6c4-11e8-96b4-7f607a211feb.png" alt="lectura poteciometro"></p>
+<p>Si rotamos al potenciómetro a ambos extremos veremos como varía el valor mostrado en el monitor serie entre un rango cercano a <code>0</code> y <code>1023</code>.</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">const</span> <span class="token keyword">int</span> pin <span class="token operator">=</span> A0<span class="token punctuation">;</span> <span class="token comment">// Pin analógico</span>
+
+<span class="token keyword">void</span> <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  Serial<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token number">9600</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Inicializamos el monitor serie</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">loop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  Serial<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token function">analogRead</span><span class="token punctuation">(</span>pin<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Mostramos el valor de lectura en el monitor serie</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<blockquote>
+<p>Podemos ver que en la posición mínima del potenciómetro nos marcará un valor no tan cercano a <code>0</code>, esto es por la resistencia fija que tiene el circuito.</p>
+</blockquote>
+<h2 id="lectura-de-un-fotoresistor">Lectura de un fotoresistor</h2>
+<p><img src="https://user-images.githubusercontent.com/16374322/48317037-66768d00-e5ca-11e8-8868-17c462ac87ce.png" alt="Lectura análoga de un fotoresistor con Arduino"></p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">const</span> <span class="token keyword">int</span> pin <span class="token operator">=</span> A0<span class="token punctuation">;</span> <span class="token comment">// Pin analógico</span>
+
+<span class="token keyword">void</span> <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  Serial<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token number">9600</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Inicializamos el monitor serie</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">loop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  Serial<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token function">analogRead</span><span class="token punctuation">(</span>pin<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Mostramos el valor de lectura en el monitor serie</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<blockquote>
+<p>Si se hace el ejercicio de <strong>tapar y destapar el fotoresistor</strong>, los valores del monitor serie cambiarán.</p>
+</blockquote>
+<h3 id="prender-un-led-cuando-haya-poca-luz">Prender un led cuando haya poca luz</h3>
+<p>Ahora le conectaremos un led al pin digital 13 para que prenda cuando el fotoresistor detecte poca luz.</p>
+<p><img src="https://user-images.githubusercontent.com/16374322/48383403-517e2480-e6c4-11e8-94d6-f825ed4395da.png" alt="Lectura análoga de un fotoresistor con Arduino y un led"></p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">const</span> <span class="token keyword">int</span> pinFotoresistor <span class="token operator">=</span> A0<span class="token punctuation">;</span> <span class="token comment">// Pin analógico</span>
+<span class="token keyword">const</span> <span class="token keyword">int</span> pinLed <span class="token operator">=</span> <span class="token number">13</span><span class="token punctuation">;</span> <span class="token comment">// Pin digital</span>
+<span class="token keyword">int</span> lectura<span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  Serial<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token number">9600</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Inicializamos el monitor serie</span>
+  <span class="token function">pinMode</span><span class="token punctuation">(</span>pinLed<span class="token punctuation">,</span> OUTPUT<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Configuramos el pin del led como salida</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">loop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">int</span> lectura <span class="token operator">=</span> <span class="token function">analogRead</span><span class="token punctuation">(</span>pinFotoresistor<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Gurdamos el valor de lectura análoga</span>
+  
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>lectura <span class="token operator">&lt;</span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> 
+    <span class="token comment">// Si hay muy poca luz</span>
+    <span class="token function">digitalWrite</span><span class="token punctuation">(</span>pinLed<span class="token punctuation">,</span> HIGH<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Prendemos el led</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Si no</span>
+    <span class="token function">digitalWrite</span><span class="token punctuation">(</span>pinLed<span class="token punctuation">,</span> LOW<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Apagamos el led</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<blockquote>
+<p>Notar que ocupamos un valor de comparación de <code>100</code>, <strong>tenemos que modificar este valor</strong> según los valores que nos muestra nuestro proyecto.</p>
+</blockquote>
+<h2 id="lectura-de-un-sensor-de-temperatura-lm35">Lectura de un sensor de temperatura LM35</h2>
+<p><img src="https://user-images.githubusercontent.com/16374322/48620965-bf567480-e980-11e8-81e0-7489d6df194e.png" alt="Lectura análoga de un sensor de temperatura LM35"></p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">const</span> <span class="token keyword">int</span> pinLM35 <span class="token operator">=</span> A0<span class="token punctuation">;</span> <span class="token comment">// Constante del pin de entrada del sensor</span>
+
+<span class="token keyword">float</span> lectura<span class="token punctuation">;</span> <span class="token comment">// Variable del valor obtenido del sensor</span>
+<span class="token keyword">float</span> gradosCelsius<span class="token punctuation">;</span> <span class="token comment">// Aquí guardaremos la temperatura en grados Celsius</span>
+ 
+<span class="token keyword">void</span> <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  Serial<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token number">9600</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+ 
+<span class="token keyword">void</span> <span class="token function">loop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  lectura <span class="token operator">=</span> <span class="token function">analogRead</span><span class="token punctuation">(</span>pinLM35<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+   
+  <span class="token comment">// Calculamos la temperatura con la fórmula</span>
+  gradosCelsius <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token number">5.0</span> <span class="token operator">*</span> lectura <span class="token operator">*</span> <span class="token number">100.0</span><span class="token punctuation">)</span><span class="token operator">/</span><span class="token number">1023.0</span><span class="token punctuation">;</span> 
+ 
+  Serial<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span>gradosCelsius<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  Serial<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">" grados Celsius"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Esperamos un tiempo para repetir el loop</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</div>
+</body>
+
+</html>
