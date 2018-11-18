@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escritura digital</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="led">Led</h1>
+<h2 id="esquema">Esquema</h2>
+<h1 id="placa-de-pruebas-o-protoboard">Placa de pruebas o <em>protoboard</em></h1>
+<h2 id="esquema-1">Esquema</h2>
+<h1 id="resistores">Resistores</h1>
+<h2 id="código-de-colores">Código de colores</h2>
+<h1 id="escritura-digital">Escritura digital</h1>
+<p>Es la manera más básica de interactuar con módulos y componentes que hay en Arduino. Sólo podemos hacer referencia a dos estados: encendido o apagado.</p>
+
+<table>
+<thead>
+<tr>
+<th align="center">Encendido</th>
+<th align="center">Apagado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">Activado</td>
+<td align="center">Desactivado</td>
+</tr>
+<tr>
+<td align="center">5 volts</td>
+<td align="center">0 volts</td>
+</tr>
+<tr>
+<td align="center"><code>HIGH</code></td>
+<td align="center"><code>LOW</code></td>
+</tr>
+<tr>
+<td align="center"><code>true</code></td>
+<td align="center"><code>false</code></td>
+</tr>
+<tr>
+<td align="center"><code>1</code></td>
+<td align="center"><code>0</code></td>
+</tr>
+</tbody>
+</table><h2 id="función-pinmode">Función <code>pinMode()</code></h2>
+<p>Normalmente utilizado en la función <code>setup()</code> para configurar uno a uno todos los pines digitales, indicándole a la placa si estos serán de entrada (escritura) o de salida (lectura).</p>
+<h3 id="sintaxis">Sintaxis</h3>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token function">pinMode</span><span class="token punctuation">(</span><span class="token keyword">int</span> pin<span class="token punctuation">,</span> modo<span class="token punctuation">)</span>
+</code></pre>
+<h3 id="parámetros">Parámetros</h3>
+<ul>
+<li><code>pin</code>: pin a configurar.</li>
+<li><code>modo</code>:  <code>INPUT</code> si es de entrada, <code>OUTPUT</code> si es de salida.</li>
+</ul>
+<blockquote>
+<p>Existe también un modo llamado <code>INPUT_PULLUP</code> que invierte los valores del <code>INPUT</code> normal.</p>
+</blockquote>
+<h2 id="función-digitalwrite">Función <code>digitalWrite()</code></h2>
+<p>Es la manera esencial de realizar una escritura digital por uno de los pines ya configurados previamente mediante la función <code>pinMode()</code>.</p>
+<h3 id="sintaxis-1">Sintaxis</h3>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token function">digitalWrite</span><span class="token punctuation">(</span><span class="token keyword">int</span> pin<span class="token punctuation">,</span> valor<span class="token punctuation">)</span>
+</code></pre>
+<h3 id="parámetros-1">Parámetros</h3>
+<ul>
+<li><code>pin</code>: pin donde se hará la escritura digital.</li>
+<li><code>valor</code>:  <code>HIGH</code> para encendido (5V), <code>LOW</code> para apagado (0V).</li>
+</ul>
+<blockquote>
+<p>Existe también un modo llamado <code>INPUT_PULLUP</code> que invierte los valores del <code>INPUT</code> normal.</p>
+</blockquote>
+<h2 id="función-delay">Función <code>delay()</code></h2>
+<p>Pausa la ejecución del programa por un tiempo determinado, normalmente se utiliza en el <code>loop()</code>.</p>
+<h3 id="sintaxis-2">Sintaxis</h3>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token function">delay</span><span class="token punctuation">(</span><span class="token keyword">long</span> milisegundos<span class="token punctuation">)</span>
+</code></pre>
+<h3 id="parámetro">Parámetro</h3>
+<ul>
+<li><code>milisegundos</code>: valor en milésimas de segundos que se pausará el programa.</li>
+</ul>
+<h2 id="parpadear-un-led">Parpadear un led</h2>
+<p>Para este proyecto cargaremos el código de ejemplo <strong>Blink</strong> que trae el IDE de Arduino incluido.</p>
+<blockquote>
+<p>Para eso nos vamos a: <strong>Archivo &gt; Ejemplos &gt; 01.Basics &gt; Blink</strong></p>
+</blockquote>
+<p><img src="https://user-images.githubusercontent.com/16374322/48641592-0c563d00-e9b9-11e8-939a-e5419bb38b32.png" alt="led solito 1"></p>
+<h3 id="constante-led_builtin">Constante <code>LED_BUILTIN</code></h3>
+<p>Es una constante definida por defecto en el IDE de Arduino, corresponde al pin digital 13 de Arduino.</p>
+<blockquote>
+<p>Si se reemplazara todos los <code>LED_BUILTIN</code> por <code>13</code> el programa funcionaría de la misma forma.</p>
+</blockquote>
+<h2 id="modificando-el-código">Modificando el código</h2>
+<p>Se eliminarán los comentarios para escribir unos propios, se reemplazarán todos los <code>LED_BUILTIN</code> por <code>13</code>, también se variarán los valores de los parámetros en las funciones <code>delay()</code> a gusto. Luego de las modificaciones, el código nos debería quedar algo así:</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">void</span> <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">pinMode</span><span class="token punctuation">(</span><span class="token number">13</span><span class="token punctuation">,</span> OUTPUT<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Se configura el pin 13 (LED_BUILTIN) como salida </span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">loop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">digitalWrite</span><span class="token punctuation">(</span><span class="token number">13</span><span class="token punctuation">,</span> HIGH<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Envia 5V al pin 13 (Enciende el led)</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">3000</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Espera 3000 milisegudos = 3 segundo</span>
+  <span class="token function">digitalWrite</span><span class="token punctuation">(</span><span class="token number">13</span><span class="token punctuation">,</span> LOW<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Deja de enviar corriente (0V) al pin 13 (Apaga el led)</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Espera 500 milisegudos = 1/2 de segundo </span>
+<span class="token punctuation">}</span>
+</code></pre>
+<blockquote>
+<p>Ahora el tiempo que el led se mantiene encendido o apagado ha variado un poco.</p>
+</blockquote>
+<h2 id="conectar-un-led-a-una-fuente-externa">Conectar un led a una fuente externa</h2>
+<p>Hasta ahora, conectar un led a Arduino no ha sido tan difícil. Pero la verdad es que la realidad es otra, cuando se conecta un led a una fuente directa sin tomar las precauciones necesarias, este puede llegar a quemarse.</p>
+<h2 id="semáforo-de-leds">Semáforo de leds</h2>
+<p><img src="https://user-images.githubusercontent.com/16374322/48668740-aa3e2a80-ead3-11e8-88d7-522009175725.png" alt="semaforo"></p>
+</div>
+</body>
+
+</html>
