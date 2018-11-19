@@ -1,0 +1,323 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I2C y librerías externas</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="protocolo-i2c">Protocolo I2C</h1>
+<h1 id="librerías-externas">Librerías externas</h1>
+<h2 id="librería-liquidcrystal-i2c">Librería LiquidCrystal I2C</h2>
+<h3 id="constructor-lcd">Constructor <code>lcd()</code></h3>
+<p>Crea un objeto de la clase <code>LiquidCrystal_I2C</code>, con todas sus características correspondientes al LCD en uso.</p>
+<h4 id="sintaxis">Sintaxis</h4>
+<pre class=" language-c"><code class="prism ++ language-c">LiquidCrystal_I2C <span class="token function">lcd</span><span class="token punctuation">(</span>direccion<span class="token punctuation">,</span> columnas<span class="token punctuation">,</span> filas<span class="token punctuation">)</span>
+</code></pre>
+<h4 id="parámetros">Parámetros</h4>
+<ul>
+<li><code>direccion</code>: dirección I2C del LCD.</li>
+<li><code>columnas</code>: número de columnas del LCD.</li>
+<li><code>filas</code>: número de filas del LCD.</li>
+</ul>
+<h4 id="parámetros-1">Parámetros</h4>
+
+<table>
+<thead>
+<tr>
+<th align="center">Referencia</th>
+<th align="center">Tipo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><code>direccion</code></td>
+<td align="center"><code>byte</code></td>
+<td>dirección I2C del LCD.</td>
+</tr>
+<tr>
+<td align="center"><code>columnas</code></td>
+<td align="center"><code>int</code></td>
+<td>Número de columnas del LCD.</td>
+</tr>
+<tr>
+<td align="center"><code>filas</code></td>
+<td align="center"><code>int</code></td>
+<td>Número de filas del LCD.</td>
+</tr>
+</tbody>
+</table><h3 id="método-init">Método <code>init()</code></h3>
+<p>Inicializa el modulo adaptador, esta función internamente configura lo necesario para utilizar el LCD mediante I2C.</p>
+<h4 id="sintaxis-1">Sintaxis</h4>
+<pre class=" language-c"><code class="prism ++ language-c">lcd<span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+<h3 id="método-backlight">Método <code>backlight()</code></h3>
+<p>Enciende la luz del fondo de la pantalla.</p>
+<h4 id="sintaxis-2">Sintaxis</h4>
+<pre class=" language-c"><code class="prism ++ language-c">lcd<span class="token punctuation">.</span><span class="token function">backlight</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+<h3 id="método-nobacklight">Método <code>noBacklight()</code></h3>
+<p>Apaga la luz del fondo de la pantalla.</p>
+<h4 id="sintaxis-3">Sintaxis</h4>
+<pre class=" language-c"><code class="prism ++ language-c">lcd<span class="token punctuation">.</span><span class="token function">noBacklight</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+<h3 id="método-setcursor">Método <code>setCursor()</code></h3>
+<p>Establecer la ubicación dónde empezará posteriormente la impresión de texto escrito.</p>
+<blockquote>
+<p>A esta ubicación se le denomina <strong>cursor</strong>.</p>
+</blockquote>
+<h4 id="sintaxis-4">Sintaxis</h4>
+<pre class=" language-c"><code class="prism ++ language-c">lcd<span class="token punctuation">.</span><span class="token function">setCursor</span><span class="token punctuation">(</span>columna<span class="token punctuation">,</span> fila<span class="token punctuation">)</span>
+</code></pre>
+<h4 id="parámetros-2">Parámetros</h4>
+<ul>
+<li><code>columna</code>: columna donde se posicionará el cursor.</li>
+<li><code>fila</code>: fila donde se posicionará el cursor.</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th align="center">Referencia</th>
+<th align="center">Tipo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><code>columna</code></td>
+<td align="center"><code>int</code></td>
+<td>Columna donde se posicionará el cursor.</td>
+</tr>
+<tr>
+<td align="center"><code>fila</code></td>
+<td align="center"><code>int</code></td>
+<td>Fila donde se posicionará el cursor.</td>
+</tr>
+</tbody>
+</table><h3 id="método-print">Método <code>print()</code></h3>
+<p>Escribe un texto o mensaje en el LCD, su uso es similar a un <code>Serial.print()</code>.</p>
+<h4 id="sintaxis-5">Sintaxis</h4>
+<pre class=" language-c"><code class="prism ++ language-c">lcd<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span>texto<span class="token punctuation">)</span>
+</code></pre>
+<h4 id="parámetros-3">Parámetros</h4>
+
+<table>
+<thead>
+<tr>
+<th align="center">Referencia</th>
+<th align="center">Tipo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><code>texto</code></td>
+<td align="center"><code>String</code></td>
+<td>Texto que se escribirá en el LCD.</td>
+</tr>
+</tbody>
+</table><h3 id="método-clear">Método <code>clear()</code></h3>
+<p>Limpia la pantalla y posiciona el cursor en la esquina superior izquierda (posición <code>(0, 0)</code>)</p>
+<h4 id="sintaxis-6">Sintaxis</h4>
+<pre class=" language-c"><code class="prism ++ language-c">lcd<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+<h3 id="método-scrolldisplayleft">Método <code>scrollDisplayLeft()</code></h3>
+<p>Desplaza el contenido de la pantalla, texto y cursor, un espacio hacia la izquierda.</p>
+<h4 id="sintaxis-7">Sintaxis</h4>
+<pre class=" language-c"><code class="prism ++ language-c">lcd<span class="token punctuation">.</span><span class="token function">scrollDisplayLeft</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+<h3 id="método-scrolldisplayright">Método <code>scrollDisplayRight()</code></h3>
+<p>Desplaza el contenido de la pantalla, texto y cursor, un espacio hacia la derecha.</p>
+<h4 id="sintaxis-8">Sintaxis</h4>
+<pre class=" language-c"><code class="prism ++ language-c">lcd<span class="token punctuation">.</span><span class="token function">scrollDisplayRight</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+<h3 id="método-createchar">Método <code>createChar()</code></h3>
+<p>Crea un carácter personalizado para su uso en la pantalla LCD.</p>
+<blockquote>
+<p>Se admiten hasta <strong>ocho caracteres</strong>, numerados del 0 al 7, de 5x8 pixeles.</p>
+</blockquote>
+<h4 id="sintaxis-9">Sintaxis</h4>
+<pre class=" language-c"><code class="prism ++ language-c">lcd<span class="token punctuation">.</span><span class="token function">createChar</span><span class="token punctuation">(</span>numero<span class="token punctuation">,</span> datos<span class="token punctuation">)</span>
+</code></pre>
+<h4 id="parámetros-4">Parámetros</h4>
+
+<table>
+<thead>
+<tr>
+<th align="center">Referencia</th>
+<th align="center">Tipo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><code>numero</code></td>
+<td align="center"><code>int</code></td>
+<td>Número de carácter.</td>
+</tr>
+<tr>
+<td align="center"><code>datos</code></td>
+<td align="center"><code>int[][]</code></td>
+<td>Matriz que contiene los pixeles del carácter.</td>
+</tr>
+</tbody>
+</table><h2 id="librería-keypad">Librería Keypad</h2>
+<h3 id="constructor--keypad">Constructor  <code>Keypad</code></h3>
+<h4 id="sintaxis-10">Sintaxis</h4>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token function">Keypad</span><span class="token punctuation">(</span>keyMap<span class="token punctuation">,</span> pinsFilas<span class="token punctuation">,</span> pinsColumnas<span class="token punctuation">,</span> filas<span class="token punctuation">,</span> columnas<span class="token punctuation">)</span>
+</code></pre>
+<h4 id="parámetros-5">Parámetros</h4>
+
+<table>
+<thead>
+<tr>
+<th align="center">Referencia</th>
+<th align="center">Tipo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><code>keyMap</code></td>
+<td align="center"><code>Keymap</code></td>
+<td>Mapa de las teclas devuelto por <code>makeKeymap()</code>.</td>
+</tr>
+<tr>
+<td align="center"><code>pinsFilas</code></td>
+<td align="center"><code>int[]</code></td>
+<td>Arreglo que contiene los pines correspondiente a las filas.</td>
+</tr>
+<tr>
+<td align="center"><code>pinsColumnas</code></td>
+<td align="center"><code>int[]</code></td>
+<td>Arreglo que contiene los pines correspondiente a las columnas.</td>
+</tr>
+<tr>
+<td align="center"><code>filas</code></td>
+<td align="center"><code>int</code></td>
+<td>Número de filas del teclado.</td>
+</tr>
+<tr>
+<td align="center"><code>columnas</code></td>
+<td align="center"><code>int</code></td>
+<td>Número de columnas del teclado.</td>
+</tr>
+</tbody>
+</table><h4 id="retorno">Retorno</h4>
+<p>Un objeto <code>Keypad</code> que se usará para manipular el teclado.</p>
+<h3 id="función-makekeymap">Función <code>makeKeymap()</code></h3>
+<h4 id="sintaxis-11">Sintaxis</h4>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token function">makeKeymap</span><span class="token punctuation">(</span>teclas<span class="token punctuation">)</span>
+</code></pre>
+<h4 id="parámetros-6">Parámetros</h4>
+
+<table>
+<thead>
+<tr>
+<th align="center">Referencia</th>
+<th align="center">Tipo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><code>teclas</code></td>
+<td align="center"><code>char[][]</code></td>
+<td>Matriz que contiene el valor de cada tecla.</td>
+</tr>
+</tbody>
+</table><h4 id="retorno-1">Retorno</h4>
+<p>Un objeto <code>Keymap</code> que contiene un mapa de las teclas.</p>
+<h3 id="método-getkey">Método <code>getKey()</code></h3>
+<h4 id="sintaxis-12">Sintaxis</h4>
+<pre class=" language-c"><code class="prism ++ language-c">objetoKeypad<span class="token punctuation">.</span><span class="token function">getKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+<h4 id="retorno-2">Retorno</h4>
+<p>Un <code>char</code> correspondiente a la tecla presionada.</p>
+<h3 id="método-waitforkey">Método <code>waitForKey()</code></h3>
+<p>Similar a <code>getKey()</code> con la diferencia de que se espera <strong>para siempre</strong> hasta que se presione una tecla.</p>
+<blockquote>
+<p><strong>Cuidado</strong>: bloquea toda la ejecución del programa hasta que se presione una tecla.</p>
+</blockquote>
+<h3 id="método-getstate">Método <code>getState()</code></h3>
+<p>Devuelve el estado actual de cualquiera de las teclas.</p>
+<h4 id="retorno-3">Retorno</h4>
+<p>Una constante <code>KeyState</code> correspondiente a alguno de los cuatro estados: <code>IDLE</code>, <code>PRESSED</code>, <code>RELEASED</code> and <code>HOLD</code>.</p>
+<h3 id="boolean-keystatechanged">boolean <code>keyStateChanged()</code></h3>
+<p>New in version 2.0: Let’s you know when the key has changed from one state to another. For example, instead of just testing for a valid key you can test for when a key was pressed.</p>
+<h3 id="setholdtimeunsigned-int-time"><code>setHoldTime(unsigned int time)</code></h3>
+<p>Set the amount of milliseconds the user will have to hold a button until the HOLD state is triggered.</p>
+<h3 id="setdebouncetimeunsigned-int-time"><code>setDebounceTime(unsigned int time)</code></h3>
+<p>Set the amount of milliseconds the keypad will wait until it accepts a new keypress/keyEvent. This is the “time delay” debounce method.</p>
+<h3 id="addeventlistenerkeypadevent"><code>addEventListener(keypadEvent)</code></h3>
+<p>Trigger an event if the keypad is used. You can load an example in the Arduino IDE.<br>
+[See File -&gt; Examples -&gt; Keypad -&gt; Examples -&gt;  EventSerialKeypad] or see the  <a href="https://playground.arduino.cc/KeypadTutorial/EventKeypad">KeypadEvent Example</a>  code.</p>
+<h2 id="conectar-el-lcd">Conectar el LCD</h2>
+<p><img src="https://user-images.githubusercontent.com/16374322/48721839-7103d880-ec01-11e8-9de8-07cbbb2226d9.png" alt="lcd i2c"></p>
+<h3 id="escaner-i2c">Escaner I2C</h3>
+<p>Antes que nada, necesitamos averiguar la dirección I2C de nuestro LCD para llamar al constructor <code>lcd()</code>. Por esto, lo que haremos será escanear todos los dispositivos I2C que estén conectados a nuestra placa Arduino con el siguiente código.</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">void</span> <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  Wire<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  Serial<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token number">9600</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token operator">!</span>Serial<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  Serial<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"\nI2C Scanner"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">loop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  byte error<span class="token punctuation">,</span> address<span class="token punctuation">;</span>
+  <span class="token keyword">int</span> nDevices<span class="token punctuation">;</span>
+
+  Serial<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Scanning..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  nDevices <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token keyword">for</span><span class="token punctuation">(</span>address <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> address <span class="token operator">&lt;</span> <span class="token number">127</span><span class="token punctuation">;</span> address<span class="token operator">++</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Wire<span class="token punctuation">.</span><span class="token function">beginTransmission</span><span class="token punctuation">(</span>address<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    error <span class="token operator">=</span> Wire<span class="token punctuation">.</span><span class="token function">endTransmission</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>error <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      Serial<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"I2C device found at address 0x"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>address<span class="token operator">&lt;</span><span class="token number">16</span><span class="token punctuation">)</span> 
+        Serial<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"0"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      Serial<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span>address<span class="token punctuation">,</span>HEX<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      Serial<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"  !"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      nDevices<span class="token operator">++</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>error<span class="token operator">==</span><span class="token number">4</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      Serial<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Unknown error at address 0x"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>address<span class="token operator">&lt;</span><span class="token number">16</span><span class="token punctuation">)</span> 
+        Serial<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"0"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      Serial<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>address<span class="token punctuation">,</span>HEX<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>    
+  <span class="token punctuation">}</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>nDevices <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    Serial<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"No I2C devices found\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">else</span>
+    Serial<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"done\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">5000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>En el monitor serial:</strong></p>
+<pre><code>Scanning...
+I2C device found at address 0x3F  !
+done
+</code></pre>
+<p>Dónde <code>0x3F</code> será nuestra dirección I2C correspondiente al LCD y la llamada al constructor se vería algo así:</p>
+<pre class=" language-c"><code class="prism ++ language-c">LiquidCrystal_I2C <span class="token function">lcd</span><span class="token punctuation">(</span><span class="token number">0x3F</span><span class="token punctuation">,</span> <span class="token number">16</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<blockquote>
+<p>La dirección <code>0x3F</code> puede ser distinta dependiendo de cada caso, por lo que siempre es bueno hacer un escaneo para asegurarse.</p>
+</blockquote>
+<h2 id="conectar-el-teclado">Conectar el teclado</h2>
+<p>Sin desconectar el LCD, conectaremos el teclado matricial de la siguiente manera:</p>
+<p><img src="https://user-images.githubusercontent.com/16374322/48723216-cb526880-ec04-11e8-8094-e1f23c0bace9.png" alt="analogreadserial2lcd_led_bb"></p>
+<h2 id="verificación-de-contraseña">Verificación de contraseña</h2>
+</div>
+</body>
+
+</html>
