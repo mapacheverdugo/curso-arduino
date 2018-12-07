@@ -10,8 +10,11 @@
 
 <body class="stackedit">
   <div class="stackedit__html"><h1 id="protocolo-i2c">Protocolo I2C</h1>
+<p>I2C significa Circuito Interintegrado (<em>Inter-Integrated Circuit</em>) es un protocolo de comunicación serial desarrollado por Phillips Semiconductors en la década de los 80s.</p>
 <h1 id="librerías-externas">Librerías externas</h1>
-<h2 id="librería-liquidcrystal-i2c">Librería LiquidCrystal I2C</h2>
+<p>El IDE de Arduino tiene su propio gestor de librerías para instalar nuevas, para acceder a él se entra a <strong>Programa &gt; Incluir Librería &gt; Gestionar Librerías</strong></p>
+<h2 id="librería-liquidcrystal_i2c">Librería LiquidCrystal_I2C</h2>
+<p>Librería <code>LiquidCrystal_I2C</code> por <strong>Frank de Brabander</strong>.</p>
 <h3 id="constructor-lcd">Constructor <code>lcd()</code></h3>
 <p>Crea un objeto de la clase <code>LiquidCrystal_I2C</code>, con todas sus características correspondientes al LCD en uso.</p>
 <h4 id="sintaxis">Sintaxis</h4>
@@ -167,6 +170,7 @@
 </tr>
 </tbody>
 </table><h2 id="librería-keypad">Librería Keypad</h2>
+<p>Librería <code>Keypad</code> por <strong>Mark Stanley, Alexander Brevig</strong>.</p>
 <h3 id="constructor--keypad">Constructor  <code>Keypad</code></h3>
 <h4 id="sintaxis-10">Sintaxis</h4>
 <pre class=" language-c"><code class="prism ++ language-c"><span class="token function">Keypad</span><span class="token punctuation">(</span>keyMap<span class="token punctuation">,</span> pinsFilas<span class="token punctuation">,</span> pinsColumnas<span class="token punctuation">,</span> filas<span class="token punctuation">,</span> columnas<span class="token punctuation">)</span>
@@ -257,7 +261,7 @@
 <h3 id="addeventlistenerkeypadevent"><code>addEventListener(keypadEvent)</code></h3>
 <p>Trigger an event if the keypad is used. You can load an example in the Arduino IDE.<br>
 [See File -&gt; Examples -&gt; Keypad -&gt; Examples -&gt;  EventSerialKeypad] or see the  <a href="https://playground.arduino.cc/KeypadTutorial/EventKeypad">KeypadEvent Example</a>  code.</p>
-<h2 id="conectar-el-lcd">Conectar el LCD</h2>
+<h2 id="conectar-un-lcd-16x2">Conectar un LCD 16x2</h2>
 <p><img src="https://user-images.githubusercontent.com/16374322/48721839-7103d880-ec01-11e8-9de8-07cbbb2226d9.png" alt="lcd i2c"></p>
 <h3 id="escaner-i2c">Escaner I2C</h3>
 <p>Antes que nada, necesitamos averiguar la dirección I2C de nuestro LCD para llamar al constructor <code>lcd()</code>. Por esto, lo que haremos será escanear todos los dispositivos I2C que estén conectados a nuestra placa Arduino con el siguiente código.</p>
@@ -313,10 +317,165 @@ done
 <blockquote>
 <p>La dirección <code>0x3F</code> puede ser distinta dependiendo de cada caso, por lo que siempre es bueno hacer un escaneo para asegurarse.</p>
 </blockquote>
-<h2 id="conectar-el-teclado">Conectar el teclado</h2>
+<h3 id="escribir-en-la-pantalla">Escribir en la pantalla</h3>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;Wire.h&gt;</span> </span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;LiquidCrystal_I2C.h&gt;</span></span>
+
+LiquidCrystal_I2C <span class="token function">lcd</span><span class="token punctuation">(</span><span class="token number">0x3F</span><span class="token punctuation">,</span> <span class="token number">16</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  lcd<span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  lcd<span class="token punctuation">.</span><span class="token function">backlight</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  lcd<span class="token punctuation">.</span><span class="token function">setCursor</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+  lcd<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Club INNDEV"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  lcd<span class="token punctuation">.</span><span class="token function">setCursor</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  lcd<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"UTEM"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">loop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="crear-un-nuevo-caracter">Crear un nuevo caracter</h3>
+<p>Hay herramientas que nos facilitan mucho este trabajo, como <a href="https://maxpromer.github.io/LCD-Character-Creator/" title="Creador de caracteres para LCD">esta aplicación</a> que con sólo empezar a dibujar en el panel de 8x5 que tiene disponible, nos genera un código automáticamente.</p>
+<blockquote>
+<p>Sólo necesitamos copiar el arreglo <code>customChar</code> que nos genera la aplicación.</p>
+</blockquote>
+<h2 id="conectar-un-teclado-matricial-4x4">Conectar un teclado matricial 4x4</h2>
 <p>Sin desconectar el LCD, conectaremos el teclado matricial de la siguiente manera:</p>
 <p><img src="https://user-images.githubusercontent.com/16374322/48723216-cb526880-ec04-11e8-8094-e1f23c0bace9.png" alt="analogreadserial2lcd_led_bb"></p>
+<h3 id="escribir-en-el-monitor-serial">Escribir en el monitor serial</h3>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;Keypad.h&gt;</span></span>
+
+<span class="token keyword">const</span> byte FILAS <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> byte COLUMNAS <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span>
+
+<span class="token keyword">char</span> significadoTeclas<span class="token punctuation">[</span>FILAS<span class="token punctuation">]</span><span class="token punctuation">[</span>COLUMNAS<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token punctuation">{</span><span class="token string">'0'</span><span class="token punctuation">,</span><span class="token string">'1'</span><span class="token punctuation">,</span><span class="token string">'2'</span><span class="token punctuation">,</span><span class="token string">'3'</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token string">'4'</span><span class="token punctuation">,</span><span class="token string">'5'</span><span class="token punctuation">,</span><span class="token string">'6'</span><span class="token punctuation">,</span><span class="token string">'7'</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token string">'8'</span><span class="token punctuation">,</span><span class="token string">'9'</span><span class="token punctuation">,</span><span class="token string">'A'</span><span class="token punctuation">,</span><span class="token string">'B'</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token string">'C'</span><span class="token punctuation">,</span><span class="token string">'D'</span><span class="token punctuation">,</span><span class="token string">'E'</span><span class="token punctuation">,</span><span class="token string">'F'</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+byte pinsFilas<span class="token punctuation">[</span>FILAS<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+byte pinsColumnas<span class="token punctuation">[</span>COLUMNAS<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">9</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+Keypad teclado <span class="token operator">=</span> <span class="token function">Keypad</span><span class="token punctuation">(</span><span class="token function">makeKeymap</span><span class="token punctuation">(</span>significadoTeclas<span class="token punctuation">)</span><span class="token punctuation">,</span> pinsFilas<span class="token punctuation">,</span> pinsColumnas<span class="token punctuation">,</span> FILAS<span class="token punctuation">,</span> COLUMNAS<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+
+<span class="token keyword">void</span> <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  Serial<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token number">9600</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+  
+<span class="token keyword">void</span> <span class="token function">loop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  <span class="token keyword">char</span> presionada <span class="token operator">=</span> teclado<span class="token punctuation">.</span><span class="token function">getKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>presionada<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Serial<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>presionada<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="escritura-en-tiempo-real-en-el-lcd">Escritura en tiempo real en el LCD</h3>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;Keypad.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;Wire.h&gt;</span> </span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;LiquidCrystal_I2C.h&gt;</span></span>
+
+<span class="token keyword">const</span> byte FILAS <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> byte COLUMNAS <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span>
+
+<span class="token keyword">char</span> significadoTeclas<span class="token punctuation">[</span>FILAS<span class="token punctuation">]</span><span class="token punctuation">[</span>COLUMNAS<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token punctuation">{</span><span class="token string">'0'</span><span class="token punctuation">,</span><span class="token string">'1'</span><span class="token punctuation">,</span><span class="token string">'2'</span><span class="token punctuation">,</span><span class="token string">'3'</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token string">'4'</span><span class="token punctuation">,</span><span class="token string">'5'</span><span class="token punctuation">,</span><span class="token string">'6'</span><span class="token punctuation">,</span><span class="token string">'7'</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token string">'8'</span><span class="token punctuation">,</span><span class="token string">'9'</span><span class="token punctuation">,</span><span class="token string">'A'</span><span class="token punctuation">,</span><span class="token string">'B'</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token string">'C'</span><span class="token punctuation">,</span><span class="token string">'D'</span><span class="token punctuation">,</span><span class="token string">'E'</span><span class="token punctuation">,</span><span class="token string">'F'</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+byte pinsFilas<span class="token punctuation">[</span>FILAS<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+byte pinsColumnas<span class="token punctuation">[</span>COLUMNAS<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">9</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> contador <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> posicionFila <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+Keypad teclado <span class="token operator">=</span> <span class="token function">Keypad</span><span class="token punctuation">(</span><span class="token function">makeKeymap</span><span class="token punctuation">(</span>significadoTeclas<span class="token punctuation">)</span><span class="token punctuation">,</span> pinsFilas<span class="token punctuation">,</span> pinsColumnas<span class="token punctuation">,</span> FILAS<span class="token punctuation">,</span> COLUMNAS<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+LiquidCrystal_I2C <span class="token function">lcd</span><span class="token punctuation">(</span><span class="token number">0x3F</span><span class="token punctuation">,</span> <span class="token number">16</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  lcd<span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  lcd<span class="token punctuation">.</span><span class="token function">backlight</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+  
+<span class="token keyword">void</span> <span class="token function">loop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  <span class="token keyword">char</span> presionada <span class="token operator">=</span> teclado<span class="token punctuation">.</span><span class="token function">getKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>presionada<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>contador <span class="token operator">&gt;=</span> <span class="token number">16</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      contador <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>posicionFila <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+        posicionFila <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+      <span class="token keyword">else</span>
+        posicionFila <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+      lcd<span class="token punctuation">.</span><span class="token function">setCursor</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> posicionFila<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    lcd<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span>presionada<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
 <h2 id="verificación-de-contraseña">Verificación de contraseña</h2>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;Keypad.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;Wire.h&gt;</span> </span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;LiquidCrystal_I2C.h&gt;</span></span>
+
+<span class="token keyword">const</span> byte FILAS <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> byte COLUMNAS <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span>
+
+<span class="token keyword">char</span> significadoTeclas<span class="token punctuation">[</span>FILAS<span class="token punctuation">]</span><span class="token punctuation">[</span>COLUMNAS<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token punctuation">{</span><span class="token string">'0'</span><span class="token punctuation">,</span><span class="token string">'1'</span><span class="token punctuation">,</span><span class="token string">'2'</span><span class="token punctuation">,</span><span class="token string">'3'</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token string">'4'</span><span class="token punctuation">,</span><span class="token string">'5'</span><span class="token punctuation">,</span><span class="token string">'6'</span><span class="token punctuation">,</span><span class="token string">'7'</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token string">'8'</span><span class="token punctuation">,</span><span class="token string">'9'</span><span class="token punctuation">,</span><span class="token string">'A'</span><span class="token punctuation">,</span><span class="token string">'B'</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token string">'C'</span><span class="token punctuation">,</span><span class="token string">'D'</span><span class="token punctuation">,</span><span class="token string">'E'</span><span class="token punctuation">,</span><span class="token string">'F'</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> String contrasenia <span class="token operator">=</span> <span class="token string">"C81A"</span>
+String textoIngresado <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>
+
+byte pinsFilas<span class="token punctuation">[</span>FILAS<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+byte pinsColumnas<span class="token punctuation">[</span>COLUMNAS<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">9</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> contador <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+Keypad teclado <span class="token operator">=</span> <span class="token function">Keypad</span><span class="token punctuation">(</span><span class="token function">makeKeymap</span><span class="token punctuation">(</span>significadoTeclas<span class="token punctuation">)</span><span class="token punctuation">,</span> pinsFilas<span class="token punctuation">,</span> pinsColumnas<span class="token punctuation">,</span> FILAS<span class="token punctuation">,</span> COLUMNAS<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+LiquidCrystal_I2C <span class="token function">lcd</span><span class="token punctuation">(</span><span class="token number">0x3F</span><span class="token punctuation">,</span> <span class="token number">16</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  lcd<span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  lcd<span class="token punctuation">.</span><span class="token function">backlight</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  lcd<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">" Su contraseña: "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  lcd<span class="token punctuation">.</span><span class="token function">setCursor</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Bajamos a la siguiente linea</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">loop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">char</span> presionada <span class="token operator">=</span> teclado<span class="token punctuation">.</span><span class="token function">getKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>presionada<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    textoIngresado <span class="token operator">=</span> textoIngresado <span class="token operator">+</span> presionada<span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>contador <span class="token operator">&gt;=</span> <span class="token number">4</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>contrasenia <span class="token operator">==</span> textoIngresado<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        lcd<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        lcd<span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        lcd<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Correcto"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        lcd<span class="token punctuation">.</span><span class="token function">setCursor</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        lcd<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Bienvenido"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        lcd<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        lcd<span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        lcd<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Incorrecto"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        lcd<span class="token punctuation">.</span><span class="token function">setCursor</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        lcd<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Prueba otra vez"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      lcd<span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      lcd<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">" Su contraseña: "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      lcd<span class="token punctuation">.</span><span class="token function">setCursor</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Bajamos a la siguiente linea</span>
+    <span class="token punctuation">}</span>
+    lcd<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span>presionada<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
 </div>
 </body>
 
