@@ -1,0 +1,300 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Motores</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="servomotor">Servomotor</h1>
+<p>Es un tipo de motor que hace movimientos entre 90º y -90º. Estos motores funcionan con señal <strong>PWM</strong> en los pines digitales del Arduino.</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;Servo.h&gt;</span></span>
+ 
+Servo servoMotor<span class="token punctuation">;</span> <span class="token comment">// Declaramos la variable para controlar el servo</span>
+ 
+<span class="token keyword">void</span> <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  Serial<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token number">9600</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Iniciamos el monitor serie para mostrar el resultado</span>
+  servoMotor<span class="token punctuation">.</span><span class="token function">attach</span><span class="token punctuation">(</span><span class="token number">9</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Declaramos el pin 9 como pin del servo</span>
+<span class="token punctuation">}</span>
+ 
+<span class="token keyword">void</span> <span class="token function">loop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  servoMotor<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Desplazamos a la posición 0º</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Esperamos 1 segundo</span>
+  
+  servoMotor<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token number">90</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Desplazamos a la posición 90º</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Esperamos 1 segundo</span>
+  
+  servoMotor<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token number">180</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Desplazamos a la posición 180º</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Esperamos 1 segundo</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h1 id="motor-dc">Motor DC</h1>
+<h1 id="motor-paso-a-paso">Motor paso a paso</h1>
+<p>El motor paso a paso conocido también como motor de pasos es un dispositivo electromecánico que convierte una serie de impulsos eléctricos en desplazamientos angulares.</p>
+<h2 id="paso-normal-o-par-máximo">Paso normal o par máximo</h2>
+<p>Consiste en alimentar dos bobinas a la vez en cada ciclo.</p>
+<p><img src="https://programarfacil.com/wp-content/uploads/2016/03/normal.gif" alt="enter image description here"></p>
+
+<table>
+<thead>
+<tr>
+<th align="center">PASO</th>
+<th align="center">BOBINA A</th>
+<th align="center">BOBINA B</th>
+<th align="center">BOBINA C</th>
+<th align="center">BOBINA D</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">1</td>
+<td align="center"><code>HIGH</code></td>
+<td align="center"><code>HIGH</code></td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>LOW</code></td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>HIGH</code></td>
+<td align="center"><code>HIGH</code></td>
+<td align="center"><code>LOW</code></td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>HIGH</code></td>
+<td align="center"><code>HIGH</code></td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center"><code>HIGH</code></td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>HIGH</code></td>
+</tr>
+</tbody>
+</table><h3 id="mover-un-motor-28byj-48--y-driver-uln2003-con-paso-normal">Mover un motor 28BYJ-48  y driver ULN2003 con paso normal</h3>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token comment">// Definicion de pins</span>
+<span class="token keyword">const</span> <span class="token keyword">int</span> pinMotor1 <span class="token operator">=</span> <span class="token number">8</span><span class="token punctuation">;</span>  <span class="token comment">// ULN2003 IN1</span>
+<span class="token keyword">const</span> <span class="token keyword">int</span> pinMotor2 <span class="token operator">=</span> <span class="token number">9</span><span class="token punctuation">;</span>  <span class="token comment">// ULN2003 IN2</span>
+<span class="token keyword">const</span> <span class="token keyword">int</span> pinMotor3 <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span> <span class="token comment">// ULN2003 IN3</span>
+<span class="token keyword">const</span> <span class="token keyword">int</span> pinMotor4 <span class="token operator">=</span> <span class="token number">11</span><span class="token punctuation">;</span> <span class="token comment">// ULN2003 IN4</span>
+
+<span class="token keyword">int</span> pasoParMaximo<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// Declarar pines usados como salida</span>
+  <span class="token function">pinMode</span><span class="token punctuation">(</span>pinMotor1<span class="token punctuation">,</span> OUTPUT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">pinMode</span><span class="token punctuation">(</span>pinMotor2<span class="token punctuation">,</span> OUTPUT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">pinMode</span><span class="token punctuation">(</span>pinMotor3<span class="token punctuation">,</span> OUTPUT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">pinMode</span><span class="token punctuation">(</span>pinMotor4<span class="token punctuation">,</span> OUTPUT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+ 
+<span class="token keyword">void</span> <span class="token function">loop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">4</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">digitalWrite</span><span class="token punctuation">(</span>IN1<span class="token punctuation">,</span> pasoParMaximo<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">digitalWrite</span><span class="token punctuation">(</span>IN2<span class="token punctuation">,</span> pasoParMaximo<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">digitalWrite</span><span class="token punctuation">(</span>IN3<span class="token punctuation">,</span> pasoParMaximo<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">digitalWrite</span><span class="token punctuation">(</span>IN4<span class="token punctuation">,</span> pasoParMaximo<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="paso-por-ola-o-completo">Paso por ola o completo</h2>
+<p>Consiste en alimentar las bobinas una por una</p>
+<p><img src="https://programarfacil.com/wp-content/uploads/2016/03/movimiento-ola.gif" alt="enter image description here"></p>
+
+<table>
+<thead>
+<tr>
+<th align="center">PASO</th>
+<th align="center">BOBINA A</th>
+<th align="center">BOBINA B</th>
+<th align="center">BOBINA C</th>
+<th align="center">BOBINA D</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">1</td>
+<td align="center"><code>HIGH</code></td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>LOW</code></td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>HIGH</code></td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>LOW</code></td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>HIGH</code></td>
+<td align="center"><code>LOW</code></td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>HIGH</code></td>
+</tr>
+</tbody>
+</table><h3 id="mover-un-motor-28byj-48--y-driver-uln2003-con-paso-por-ola">Mover un motor 28BYJ-48  y driver ULN2003 con paso por ola</h3>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token comment">// Definicion de pins</span>
+<span class="token keyword">const</span> <span class="token keyword">int</span> pinMotor1 <span class="token operator">=</span> <span class="token number">8</span><span class="token punctuation">;</span>  <span class="token comment">// ULN2003 IN1</span>
+<span class="token keyword">const</span> <span class="token keyword">int</span> pinMotor2 <span class="token operator">=</span> <span class="token number">9</span><span class="token punctuation">;</span>  <span class="token comment">// ULN2003 IN2</span>
+<span class="token keyword">const</span> <span class="token keyword">int</span> pinMotor3 <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span> <span class="token comment">// ULN2003 IN3</span>
+<span class="token keyword">const</span> <span class="token keyword">int</span> pinMotor4 <span class="token operator">=</span> <span class="token number">11</span><span class="token punctuation">;</span> <span class="token comment">// ULN2003 IN4</span>
+
+<span class="token keyword">int</span> pasoParMenor<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// Declarar pines usados como salida</span>
+  <span class="token function">pinMode</span><span class="token punctuation">(</span>pinMotor1<span class="token punctuation">,</span> OUTPUT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">pinMode</span><span class="token punctuation">(</span>pinMotor2<span class="token punctuation">,</span> OUTPUT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">pinMode</span><span class="token punctuation">(</span>pinMotor3<span class="token punctuation">,</span> OUTPUT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">pinMode</span><span class="token punctuation">(</span>pinMotor4<span class="token punctuation">,</span> OUTPUT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+ 
+<span class="token keyword">void</span> <span class="token function">loop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">4</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">digitalWrite</span><span class="token punctuation">(</span>IN1<span class="token punctuation">,</span> pasoParMenor<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">digitalWrite</span><span class="token punctuation">(</span>IN2<span class="token punctuation">,</span> pasoParMenor<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">digitalWrite</span><span class="token punctuation">(</span>IN3<span class="token punctuation">,</span> pasoParMenor<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">digitalWrite</span><span class="token punctuation">(</span>IN4<span class="token punctuation">,</span> pasoParMenor<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="paso-medio">Paso medio</h2>
+<p>Consiste en un paso lento y suave que se consigue alternando los dos pasos anteriores.</p>
+<p><img src="https://programarfacil.com/wp-content/uploads/2016/03/movimiento-medio.gif" alt="enter image description here"></p>
+
+<table>
+<thead>
+<tr>
+<th align="center">PASO</th>
+<th align="center">BOBINA A</th>
+<th align="center">BOBINA B</th>
+<th align="center">BOBINA C</th>
+<th align="center">BOBINA D</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">1</td>
+<td align="center"><code>HIGH</code></td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>LOW</code></td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center"><code>HIGH</code></td>
+<td align="center"><code>HIGH</code></td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>LOW</code></td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>HIGH</code></td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>LOW</code></td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>HIGH</code></td>
+<td align="center"><code>HIGH</code></td>
+<td align="center"><code>LOW</code></td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>HIGH</code></td>
+<td align="center"><code>LOW</code></td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>HIGH</code></td>
+<td align="center"><code>HIGH</code></td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>HIGH</code></td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center"><code>HIGH</code></td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>LOW</code></td>
+<td align="center"><code>HIGH</code></td>
+</tr>
+</tbody>
+</table><h3 id="mover-un-motor-28byj-48--y-driver-uln2003-con-paso-medio">Mover un motor 28BYJ-48  y driver ULN2003 con paso medio</h3>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token comment">// Definicion de pins</span>
+<span class="token keyword">const</span> <span class="token keyword">int</span> pinMotor1 <span class="token operator">=</span> <span class="token number">8</span><span class="token punctuation">;</span>  <span class="token comment">// ULN2003 IN1</span>
+<span class="token keyword">const</span> <span class="token keyword">int</span> pinMotor2 <span class="token operator">=</span> <span class="token number">9</span><span class="token punctuation">;</span>  <span class="token comment">// ULN2003 IN2</span>
+<span class="token keyword">const</span> <span class="token keyword">int</span> pinMotor3 <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span> <span class="token comment">// ULN2003 IN3</span>
+<span class="token keyword">const</span> <span class="token keyword">int</span> pinMotor4 <span class="token operator">=</span> <span class="token number">11</span><span class="token punctuation">;</span> <span class="token comment">// ULN2003 IN4</span>
+
+<span class="token keyword">int</span> pasoMedio <span class="token punctuation">[</span><span class="token number">8</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// Declarar pines usados como salida</span>
+  <span class="token function">pinMode</span><span class="token punctuation">(</span>pinMotor1<span class="token punctuation">,</span> OUTPUT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">pinMode</span><span class="token punctuation">(</span>pinMotor2<span class="token punctuation">,</span> OUTPUT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">pinMode</span><span class="token punctuation">(</span>pinMotor3<span class="token punctuation">,</span> OUTPUT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">pinMode</span><span class="token punctuation">(</span>pinMotor4<span class="token punctuation">,</span> OUTPUT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+ 
+<span class="token keyword">void</span> <span class="token function">loop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">8</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">digitalWrite</span><span class="token punctuation">(</span>IN1<span class="token punctuation">,</span> pasoMedio<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">digitalWrite</span><span class="token punctuation">(</span>IN2<span class="token punctuation">,</span> pasoMedio<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">digitalWrite</span><span class="token punctuation">(</span>IN3<span class="token punctuation">,</span> pasoMedio<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">digitalWrite</span><span class="token punctuation">(</span>IN4<span class="token punctuation">,</span> pasoMedio<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</div>
+</body>
+
+</html>
